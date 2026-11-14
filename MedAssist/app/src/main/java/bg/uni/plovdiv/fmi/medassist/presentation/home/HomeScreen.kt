@@ -175,7 +175,7 @@ fun HeaderSection(onSettingsClick: () -> Unit) {
             Spacer(modifier = Modifier.width(12.dp))
             Column {
                 Text(
-                    text = "Medical\nAssistant",
+                    text = "Your Medical\nAssistant",
                     fontSize = 22.sp,
                     fontWeight = FontWeight.ExtraBold,
                     lineHeight = 24.sp,

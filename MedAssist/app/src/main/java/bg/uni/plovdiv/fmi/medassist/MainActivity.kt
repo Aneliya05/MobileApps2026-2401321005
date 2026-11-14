@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import bg.uni.plovdiv.fmi.medassist.navigation.AppNavigation
 import bg.uni.plovdiv.fmi.medassist.presentation.home.HomeScreen
 import bg.uni.plovdiv.fmi.medassist.ui.theme.MedAssistTheme
 
@@ -20,13 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MedAssistTheme {
-                HomeScreen(
-                    onNavigateToGuide = {},
-                    onNavigateToMap = {},
-                    onNavigateToContacts = {},
-                    onNavigateToKit = {},
-                    onNavigateToSettings = {}
-                )
+               AppNavigation()
             }
         }
     }
