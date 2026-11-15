@@ -5,12 +5,21 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import bg.uni.plovdiv.fmi.medassist.data.local.dao.ContactDao
+import bg.uni.plovdiv.fmi.medassist.data.local.dao.LabTestDao
+import bg.uni.plovdiv.fmi.medassist.data.local.dao.VaccineDao
 import bg.uni.plovdiv.fmi.medassist.data.local.entity.ContactEntity
+import bg.uni.plovdiv.fmi.medassist.data.local.entity.LabTestEntity
+import bg.uni.plovdiv.fmi.medassist.data.local.entity.VaccineEntity
 
-@Database(entities = [ContactEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [ContactEntity::class, LabTestEntity::class, VaccineEntity::class],
+    version = 2,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun contactDao(): ContactDao
-
+    abstract fun labTestDao(): LabTestDao
+    abstract fun vaccineDao(): VaccineDao
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
@@ -21,7 +30,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "medassist_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration(true)
+                    .build()
                 INSTANCE = instance
                 instance
             }

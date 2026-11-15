@@ -34,7 +34,7 @@ fun HomeScreen(
     onNavigateToGuide: () -> Unit,
     onNavigateToMap: () -> Unit,
     onNavigateToContacts: () -> Unit,
-    onNavigateToKit: () -> Unit,
+    onNavigateToHealthProfile: () -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
     val context = LocalContext.current
@@ -136,11 +136,11 @@ fun HomeScreen(
                                 modifier = Modifier.weight(1f)
                             )
                             QuickAccessCard(
-                                title = "First Aid Kit",
-                                subtitle = "Check your kit checklist",
+                                title = "Health Profile",
+                                subtitle = "Check your lab tests and vaccines",
                                 icon = Icons.Outlined.Checklist,
                                 iconTint = EmergencyRedLight,
-                                onClick = onNavigateToKit,
+                                onClick = onNavigateToHealthProfile,
                                 modifier = Modifier.weight(1f)
                             )
                         }

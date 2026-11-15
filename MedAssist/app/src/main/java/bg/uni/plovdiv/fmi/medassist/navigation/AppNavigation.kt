@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigationevent.OnBackInvokedInput
 import bg.uni.plovdiv.fmi.medassist.presentation.contacts.ContactsScreen
 import bg.uni.plovdiv.fmi.medassist.presentation.home.HomeScreen
+import bg.uni.plovdiv.fmi.medassist.presentation.kit.HealthProfileScreen
 
 @Composable
 fun AppNavigation() {
@@ -33,7 +34,7 @@ fun AppNavigation() {
                 onNavigateToGuide = { navigateSingleTop(Screen.Guide.route) },
                 onNavigateToMap = { navigateSingleTop(Screen.Map.route) },
                 onNavigateToContacts = { navigateSingleTop(Screen.Contacts.route) },
-                onNavigateToKit = { navigateSingleTop(Screen.Kit.route) },
+                onNavigateToHealthProfile = { navigateSingleTop(Screen.HealthProfile.route) },
                 onNavigateToSettings = { navigateSingleTop(Screen.Settings.route) }
             )
         }
@@ -52,8 +53,10 @@ fun AppNavigation() {
             )
         }
 
-        composable(Screen.Kit.route) {
-            // Тук ще извикаме KitScreen()
+        composable(Screen.HealthProfile.route) {
+            HealthProfileScreen(
+                onBack = {navController.popBackStack() }
+            )
         }
 
         composable(Screen.Settings.route) {
