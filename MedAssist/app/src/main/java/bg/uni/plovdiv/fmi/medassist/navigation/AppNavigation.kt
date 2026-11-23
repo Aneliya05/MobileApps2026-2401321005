@@ -5,16 +5,20 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigationevent.OnBackInvokedInput
 import bg.uni.plovdiv.fmi.medassist.presentation.contacts.ContactsScreen
+import bg.uni.plovdiv.fmi.medassist.presentation.guide.GuideScreen
 import bg.uni.plovdiv.fmi.medassist.presentation.home.HomeScreen
 import bg.uni.plovdiv.fmi.medassist.presentation.kit.HealthProfileScreen
+import bg.uni.plovdiv.fmi.medassist.presentation.map.MapScreen
+import bg.uni.plovdiv.fmi.medassist.presentation.settings.SettingsScreen
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    isDarkMode: Boolean = false,
+    onDarkModeChanged: (Boolean) -> Unit = {}
+) {
     val navController = rememberNavController()
 
-    // Помощна функция за навигация без натрупване на излишни екрани в стека
     fun navigateSingleTop(route: String) {
         navController.navigate(route) {
             popUpTo(navController.graph.findStartDestination().id) {
@@ -40,27 +44,35 @@ fun AppNavigation() {
         }
 
         composable(Screen.Guide.route) {
-            // Тук ще извикаме GuideScreen(onBack = { navController.popBackStack() })
+            GuideScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Map.route) {
-            // Тук ще извикаме MapScreen()
+            MapScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(Screen.Contacts.route) {
             ContactsScreen(
-                onBack = {navController.popBackStack() }
+                onBack = { navController.popBackStack() }
             )
         }
 
         composable(Screen.HealthProfile.route) {
             HealthProfileScreen(
-                onBack = {navController.popBackStack() }
+                onBack = { navController.popBackStack() }
             )
         }
 
         composable(Screen.Settings.route) {
-            // Тук ще извикаме SettingsScreen()
+            SettingsScreen(
+                onBack = { navController.popBackStack() },
+                isDarkMode = isDarkMode,
+                onDarkModeChanged = onDarkModeChanged
+            )
         }
     }
 }

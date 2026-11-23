@@ -12,6 +12,10 @@ interface VaccineDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertVaccine(labTest: VaccineEntity)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateVaccine(labTest: VaccineEntity)
+
+
     @Delete
     suspend fun deleteVaccine(labTest: VaccineEntity)
 

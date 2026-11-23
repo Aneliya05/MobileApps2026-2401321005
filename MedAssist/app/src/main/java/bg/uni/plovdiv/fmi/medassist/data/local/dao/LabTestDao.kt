@@ -12,6 +12,9 @@ interface LabTestDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLabTest(labTest: LabTestEntity)
 
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateLabTest(labTest: LabTestEntity)
+
     @Delete
     suspend fun deleteLabTest(labTest: LabTestEntity)
 

@@ -328,7 +328,7 @@ fun QuickAccessCard(
         onClick = onClick,
         modifier = modifier.height(105.dp),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, CardBorderGray),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
@@ -379,7 +379,7 @@ fun HelpfulTipsBanner(onClick: () -> Unit) {
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFF3F4F6))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Row(
             modifier = Modifier
@@ -437,7 +437,7 @@ fun CustomBottomNavigationBar(
     )
 
     NavigationBar(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surface,
         tonalElevation = 8.dp
     ) {
         items.forEachIndexed { index, item ->

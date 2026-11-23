@@ -13,7 +13,7 @@ import bg.uni.plovdiv.fmi.medassist.data.local.entity.VaccineEntity
 
 @Database(
     entities = [ContactEntity::class, LabTestEntity::class, VaccineEntity::class],
-    version = 2,
+    version = 4,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

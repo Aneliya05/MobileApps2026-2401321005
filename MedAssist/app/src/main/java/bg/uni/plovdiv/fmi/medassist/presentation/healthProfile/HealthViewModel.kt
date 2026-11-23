@@ -5,8 +5,12 @@ import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import bg.uni.plovdiv.fmi.medassist.data.local.database.AppDatabase
+import bg.uni.plovdiv.fmi.medassist.data.local.entity.ContactEntity
 import bg.uni.plovdiv.fmi.medassist.data.local.entity.LabTestEntity
 import bg.uni.plovdiv.fmi.medassist.data.local.entity.VaccineEntity
+import bg.uni.plovdiv.fmi.medassist.data.repository.ContactRepository
+import bg.uni.plovdiv.fmi.medassist.data.repository.LabTestRepository
+import bg.uni.plovdiv.fmi.medassist.data.repository.VaccineRepository
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -16,17 +20,32 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class HealthViewModel(application: Application) : AndroidViewModel(application) {
-    private val labTestsDao = AppDatabase.getDatabase(application).labTestDao()
-    private val vaccinesDao = AppDatabase.getDatabase(application).vaccineDao()
+    //private val labTestsDao = AppDatabase.getDatabase(application).labTestDao()
+    //private val vaccinesDao = AppDatabase.getDatabase(application).vaccineDao()
 
+    private val labTestsRepository: LabTestRepository
+    private val vaccinesRepository: VaccineRepository
 
-    // Отделен StateFlow за изследванията
-    val labTests: StateFlow<List<LabTestEntity>> = labTestsDao.getAllLabTests()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    val labTests: StateFlow<List<LabTestEntity>>
+    val vaccines: StateFlow<List<VaccineEntity>>
 
-    // Отделен StateFlow за ваксините
-    val vaccines: StateFlow<List<VaccineEntity>> = vaccinesDao.getAllVaccines()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+    init {
+        val labTestDao = AppDatabase.getDatabase(application).labTestDao()
+        labTestsRepository = LabTestRepository(labTestDao)
+        labTests = labTestsRepository.allLabTests.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+        val vaccineDao = AppDatabase.getDatabase(application).vaccineDao()
+        vaccinesRepository = VaccineRepository(vaccineDao)
+        vaccines = vaccinesRepository.allVaccines.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+    }
 
     private val _scannedText = MutableStateFlow("")
     val scannedText: StateFlow<String> = _scannedText
@@ -60,7 +79,7 @@ class HealthViewModel(application: Application) : AndroidViewModel(application) 
         val abnormal = checkForAbnormalities(extractedText)
 
         viewModelScope.launch {
-            labTestsDao.insertLabTest(
+            labTestsRepository.insert(
                 LabTestEntity(
                     testName = testName.trim(),
                     date = currentDate,
@@ -73,12 +92,12 @@ class HealthViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun deleteLabTest(labTest: LabTestEntity) {
-        viewModelScope.launch { labTestsDao.deleteLabTest(labTest) }
+        viewModelScope.launch { labTestsRepository.delete(labTest) }
     }
 
     fun saveVaccine(vaccineName: String, dateAdministered: String, nextDoseDate: String) {
         viewModelScope.launch {
-            vaccinesDao.insertVaccine(
+            vaccinesRepository.insert(
                 VaccineEntity(
                     vaccineName = vaccineName.trim(),
                     dateAdministered = dateAdministered.trim(),
@@ -89,6 +108,6 @@ class HealthViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     fun deleteVaccine(vaccine: VaccineEntity) {
-        viewModelScope.launch { vaccinesDao.deleteVaccine(vaccine) }
+        viewModelScope.launch { vaccinesRepository.delete(vaccine) }
     }
 }
